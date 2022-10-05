@@ -54,12 +54,13 @@ void Object::Draw()
 }
 
 void Object::DrawLines() {
-	glDrawArrays(GL_LINE_STRIP, 0, vertex.size());
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * vertexLines.size(), &vertexLines[0], GL_STATIC_DRAW);
+	glDrawArrays(GL_LINES, 0, vertexLines.size());
 }
 
 void Object::DrawPoints() {
 	glPointSize(4.0f);
-	glDrawArrays(GL_POINTS, 0, vertex.size());
+	glDrawArrays(GL_POINTS, 0, vertexLines.size());
 }
 
 void Object::drawNormals() {

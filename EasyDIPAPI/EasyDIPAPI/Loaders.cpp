@@ -4,6 +4,7 @@
 #include <regex>
 #include <vector>
 #include <map>
+#include <math.h>
 
 #define UPDATE_BB(xmax, xmin, x) if (x > xmax) {\
 	xmax = x;\
@@ -41,21 +42,22 @@ namespace CG
 		std::string token = "c";
 		glm::vec3 centroid(0.0f, 0.0f, 0.0f);
 		std::vector<glm::vec3> &fullvertex = a->vertex;
+		std::vector<glm::vec3> &linesvertex = a->vertexLines;
 		std::vector<int> temp;
-		float  normalizerX, normalizerY, normalizerZ;
+		float normalizer;
 		float x, y, z, xmax = -99999999990.0f, ymax = -9999999990.0f, zmax = -999999990.0f, xmin = 9999999999990.0f, ymin = 999999999990.0f, zmin = 999999999990.0f;
 
-		ifs.open("C:/Users/Danielito/Desktop/Workbench/CG1-Tarea-3-master/EasyDIPClient/EasyDIPClient/Objects/Batman.obj", std::ifstream::in);
-		std::cout << ifs.is_open() << std::endl;
+		ifs.open("C:/Users/ccgucv/Desktop/Workbench/CG1-2022-Tarea-2/EasyDIPClient/EasyDIPClient/Objects/a.obj", std::ifstream::in);
+		//std::cout << ifs.is_open() << std::endl;
 
 		if (token == "c") {
 			ifs >> token;
 		}
 
-		std::cout << token;
+		//std::cout << token;
 		while (!(ifs.eof())) {
 
-			std::cout << token;
+			//std::cout << token;
 
 			if (token == "v") {
 				
@@ -67,7 +69,7 @@ namespace CG
 				ifs >> token;
 				temp.z = std::strtof((token).c_str(), 0);
 
-				std::cout << temp.x << " " << temp.y << " " << temp.z << std::endl;
+				//std::cout << temp.x << " " << temp.y << " " << temp.z << std::endl;
 				vertex.push_back(temp);	
 				ifs >> token;
 				if (std::regex_match(token, decimal)) {
@@ -92,7 +94,7 @@ namespace CG
 
 			if (token == "vt") {
 				glm::vec3 temp(0.0f, 0.0f, 0.0f);
-				std::cout << "vertex Texture Loaded" << std::endl;
+				//std::cout << "vertex Texture Loaded" << std::endl;
 				ifs >> token;
 				temp.x = std::strtof((token).c_str(), 0);
 				ifs >> token;
@@ -115,7 +117,7 @@ namespace CG
 
 			if (token == "vn") {
 				glm::vec3 temp(0.0f, 0.0f, 0.0f);
-				std::cout << "Normal Vertex" << std::endl;
+				//std::cout << "Normal Vertex" << std::endl;
 				ifs >> token;
 				temp.x = std::strtof((token).c_str(), 0);
 				ifs >> token;
@@ -128,7 +130,7 @@ namespace CG
 
 			if (token == "vp") {
 				glm::vec3 temp(0.0f, 0.0f, 0.0f);
-				std::cout << "Vertex Pointer" << std::endl;
+				//std::cout << "Vertex Pointer" << std::endl;
 				ifs >> token;
 				temp.x = std::strtof((token).c_str(), 0);
 				ifs >> token;
@@ -151,12 +153,12 @@ namespace CG
 					temp.push_back(first);
 					ifs >> token;
 					while (std::regex_match(token, integer)) {
-						std::cout << token << std::endl;
+						//std::cout << token << std::endl;
 						temp.push_back(std::stoi(token)-1);
 						ifs >> token;
 					}
 					//faceIndex.push_back(temp);
-					std::cout << token << std::endl;
+					//std::cout << token << std::endl;
 					faceIndex.push_back(temp);
 					//ifs >> token;
 				}
@@ -182,12 +184,12 @@ namespace CG
 
 					}
 
-					std::cout << a << " " << b << std::endl;
-					std::cout << "Baina Loca" << std::endl;
+					//std::cout << a << " " << b << std::endl;
+					//std::cout << "Baina Loca" << std::endl;
 
 					while (std::regex_match(a, integer)) {
 						temp.push_back(std::stoi(a) - 1);
-						std::cout << a << std::endl;
+						//std::cout << a << std::endl;
 						a = "";
 						b = "";
 						c = true;
@@ -239,12 +241,12 @@ namespace CG
 
 					}
 
-					std::cout << a << " " << b << std::endl;
-					std::cout << "Baina Loca" << std::endl;
+					//std::cout << a << " " << b << std::endl;
+					//std::cout << "Baina Loca" << std::endl;
 
 					while (std::regex_match(a, integer)) {
 						temp.push_back(std::stoi(a) - 1);
-						std::cout << a << std::endl;
+						//std::cout << a << std::endl;
 						a = "";
 						b = "";
 						c = true;
@@ -269,8 +271,9 @@ namespace CG
 					}
 					//
 					//std::cout << a << std::endl;
+
 					faceIndex.push_back(temp);
-					std::cout << "Face Loaded" << std::endl;
+					//std::cout << "Face Loaded" << std::endl;
 					//ifs >> token;*/
 				}
 
@@ -295,12 +298,12 @@ namespace CG
 
 					}
 
-					std::cout << a << " " << b << std::endl;
-					std::cout << "Baina Loca" << std::endl;
+					//std::cout << a << " " << b << std::endl;
+					//std::cout << "Baina Loca" << std::endl;
 
 					while (std::regex_match(a, integer)) {
 						temp.push_back(std::stoi(a) - 1);
-						std::cout << a << std::endl;
+						//std::cout << a << std::endl;
 						a = "";
 						b = "";
 						c = true;
@@ -326,7 +329,7 @@ namespace CG
 					//
 					//std::cout << a << std::endl;
 					faceIndex.push_back(temp);
-					std::cout << "Face Loaded" << std::endl;
+					//std::cout << "Face Loaded" << std::endl;
 					//ifs >> token;*/
 				}
 				
@@ -334,7 +337,7 @@ namespace CG
 
 			if (token == "l") {
 				std::vector<int> temp;
-				std::cout << "Line Loaded" << std::endl;
+				//std::cout << "Line Loaded" << std::endl;
 				ifs >> token;
 				while (std::regex_match(token, integer)) {
 					temp.push_back(std::stoi(token));
@@ -355,25 +358,24 @@ namespace CG
 		minvec = glm::vec3(xmin, ymin, zmin);
 		center = (maxvec + minvec) / 2.0f;
 
-		normalizerX = glm::max(abs(maxvec.x), abs(minvec.x));
-		normalizerY = glm::max(abs(maxvec.y), abs(minvec.y));
-		normalizerZ = glm::max(abs(maxvec.z), abs(minvec.z));
+		normalizer = std::pow( pow(xmax - xmin, 2) + pow(ymax - ymin, 2) + pow(zmax - zmin, 2), 0.5);
 
-		normalizerX = glm::max(normalizerX, normalizerY);
-		normalizerX = glm::max(normalizerX, normalizerZ);
+		//std::cout << normalizer << std::endl;
 
-		//for (int it = 0; it < vertex.size(); ++it) {
 
-		//	std::cout << "(" << vertex[it].x << "," << vertex[it].y << "," << vertex[it].z << ")" << std::endl;
-		//	vertex[it] = (vertex[it] -  center) / abs(normalizerX);
-		//	//std::cout << "(" << vertex[it].x << "," << vertex[it].y << "," << vertex[it].z << ")" << std::endl; 
-		//}
+		for (int it = 0; it < vertex.size(); ++it) {
+
+			//std::cout << "(" << vertex[it].x << "," << vertex[it].y << "," << vertex[it].z << ")" << std::endl;
+			vertex[it] = vertex[it]  / normalizer;
+			//std::cout << "(" << vertex[it].x << "," << vertex[it].y << "," << vertex[it].z << ")" << std::endl; 
+
+		}
 
 		int n = faceIndex.size();
 
-		std::cout << "Almost Done" << std::endl;
+		//std::cout << "Almost Done" << std::endl;
 
-		std::cout << n << std::endl;
+		//std::cout << n << std::endl;
 
 		/*for (int i = 0; i < n; i++) {
 			std::vector<int> temp = faceIndex[i];
@@ -399,7 +401,7 @@ namespace CG
 					}
 					else {
 						a->normalCenter.push_back(0.1f * (normaloid));
-					}
+					}x
 
 			}
 			centroid = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -408,16 +410,53 @@ namespace CG
 		temp = faceIndex[0];
 
 		for (int i = 0; i < faceIndex.size(); i++) {
-			for (int j = 0; j < faceIndex[i].size(); j++) {
+			int first = faceIndex[i][0];
+			for (int j = 1; j < faceIndex[i].size() - 1; j++) {
 				glm::vec3 temp;
+				temp = vertex[first];
+				fullvertex.push_back(temp);
 				temp = vertex[faceIndex[i][j]];
 				fullvertex.push_back(temp);
-
+				temp = vertex[faceIndex[i][j+1]];
+				fullvertex.push_back(temp);
 				
+				//std::cout << "f " << first+1 << " " << faceIndex[i][j]+1 << " " << faceIndex[i][j + 1]+1 << std::endl;
+
 			}
 		}
 
-		
+		fullvertex = fullvertex;
+		glm::vec3 first = fullvertex[0];
+		int counter = 1;
+		for (int i = 0; i < fullvertex.size() - 1; i++) {
+			
+			
+
+			if (counter % 3 == 0) {
+
+				linesvertex.push_back(first);
+				linesvertex.push_back(fullvertex[i - 1]);
+				first = fullvertex[i];
+				counter = 1;
+
+			}
+			else {
+
+				linesvertex.push_back(fullvertex[i]);
+				linesvertex.push_back(fullvertex[i + 1]);
+				counter++;
+
+			}
+
+			if (i == fullvertex.size() - 2) {
+
+				linesvertex.push_back(fullvertex[i + 1]);
+				linesvertex.push_back(first);
+			}
+		}
+
+		fullvertex = fullvertex;
+		linesvertex = linesvertex;
 		
 		std::cout << "Done" << std::endl;
 
@@ -633,6 +672,7 @@ namespace CG
 
 			
 			vertex[it] = (vertex[it] - center) / normalizerX;
+
 		}
 
 		

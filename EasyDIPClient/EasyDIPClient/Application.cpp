@@ -311,17 +311,6 @@ void Application::ImGui()
 	if (ImGui::Checkbox("Normals", &Normals)) {
 
 	}
-	if (ImGui::Button("Load .off"))
-	{	
-		hi = new Object();
-		CG::LoadOff("../Objects/Object.off", hi);
-		/*for (int i = 0; i < hi->vertex.size(); i++) {
-			hi->vertex[i];
-		}*/
-		hi->Init();
-		//fileDialog.Open();
-		hi->proyec((float)(windowWidth / windowHeight));
-	}
 
 	if (ImGui::Button("Load .obj"))
 	{
