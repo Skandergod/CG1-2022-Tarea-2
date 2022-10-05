@@ -1,0 +1,19 @@
+
+
+		int convI = 0;
+		for(int yy = 0; yy < height; yy++, uAcum.y += d.y){
+			for(int xx = 0; xx < width; xx++, uAcum.x += d.x, convI++){
+				vec2 nUv = actPos + uAcum;
+				avg+= texture(tex, nUv).rgb * conv[convI];
+			}
+		}
+
+//		avg = texture(tex, actPos ).rgb;
+		texColor = avg;
+	}
+
+
+
+
+	fragColor = vec4(texColor,1);
+}																									    

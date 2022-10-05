@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{0F45D591-7B24-542D-843C-DF03F09ABA8E}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="EasyDIPAPI\EDpch.h" />
+    <ClInclude Include="EasyDIPAPI\Loaders.h" />
+    <ClInclude Include="EasyDIPAPI\Object.h" />
+    <ClInclude Include="EasyDIPAPI\shaders\Shader.h">
+      <Filter>shaders</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="EasyDIPAPI\EDpch.cpp" />
+    <ClCompile Include="EasyDIPAPI\Loaders.cpp" />
+    <ClCompile Include="EasyDIPAPI\Object.cpp" />
+    <ClCompile Include="EasyDIPAPI\shaders\Shader.cpp">
+      <Filter>shaders</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
