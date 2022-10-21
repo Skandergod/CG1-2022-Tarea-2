@@ -14,6 +14,9 @@ glm::vec3 scale(1.0f);
 glm::vec3 translation(0.0f);
 glm::vec3 origin(0.0f, 0.0f, -0.1f);
 glm::vec3 destiny(0.0f, 0.0f, 100.0f);
+glm::vec3 colorRelleno(0.7f, 0.7f, 0.7f);
+glm::vec3 colorLineas(0.7f, 0.7f, 0.7f);
+glm::vec3 colorVertices(0.7f, 0.7f, 0.7f);
 const float pi = 3.14159265358979323846264338327950288;
 bool antialising = true;
 bool zBuffer = true;
@@ -23,6 +26,8 @@ bool fill = true;
 bool FrontFaceCulling = true;
 bool BackFaceCulling = false;
 bool Normals = true;
+float FPS = 0;
+float realFPS = 0;
 float color[3];
 
 Application::Application() {
@@ -136,19 +141,21 @@ void Application::MainLoop()
 
 	double lastTime = glfwGetTime();
 	int nbFrames = 0;
+	float t1, t2, elapse;
 
 	while (!glfwWindowShouldClose(window))
 	{
 		double currentTime = glfwGetTime();
 		nbFrames++;
 
+		t1 = glfwGetTime();
 		if (currentTime - lastTime >= 5.0) { // If last prinf() was more than 1 sec ago
 		// printf and reset timer
-			std::cout << currentTime << std::endl;
-			printf("%f ms/frame\n", 1000.0 / double(nbFrames));
+			FPS = double(nbFrames) / 5.0;
 			nbFrames = 0;
-			lastTime += 1.0;
+			lastTime += 5.0;
 		}
+
 
 		glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
 		if (hi) {
@@ -177,6 +184,12 @@ void Application::MainLoop()
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		glfwSwapBuffers(window);
+
+		t2 = glfwGetTime();
+		elapse = t2 - t1;
+
+		realFPS = 1 / elapse;
+
 	}
 }
 
@@ -214,7 +227,7 @@ void Application::Render()
 		}
 
 		if (fill) {
-			bwShader->setVec3("color", glm::vec3(RGB(77), RGB(124), RGB(179)));
+			bwShader->setVec3("color", glm::vec3(colorRelleno.x, colorRelleno.y, colorRelleno.z));
 			//bwShader->setMat4("modelMatrix", hi->modelMatrix);
 			hi->Bind();
 			hi->Draw();
@@ -249,12 +262,12 @@ void Application::Render()
 			hi->DrawLines();
 		}
 		if (points) {
-			bwShader->setVec3("color", glm::vec3(RGB(255), RGB(66), RGB(60)));
+			bwShader->setVec3("color", glm::vec3(colorVertices.x, colorVertices.y, colorVertices.z));
 			hi->Bind();
 			hi->DrawPoints();
 		}
 		if (Normals) {
-			//hi->drawNormals();
+			hi->drawNormals();
 		}
 	}
 }
@@ -289,11 +302,14 @@ void Application::ImGui()
 		ImGui::NewLine();
 	}
 
+	ImGui::Text("FPS Cada 5 Segundos: %f", FPS);
+	ImGui::Text("FPS: %f", realFPS);
+	/*
 	if (texOGImg)
 	{
 		//ImGui::Image(my_tex_id, ImVec2(my_tex_w, my_tex_h), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1.0f, 1.0f, 1.0f, 1.0f), ImVec4(1.0f, 1.0f, 1.0f, 0.5f));
-	}
-
+	}*/
+	/*
 	if (ImGui::Button("recompile"))
 	{
 		//delete bwShader;
@@ -313,7 +329,7 @@ void Application::ImGui()
 
 
 	}
-
+	*/
 	/*if (ImGui::ColorEdit3("color 1", &color,0)) {
 		std::cout << color[0] << ","<< color[1] << ","<< color[2] << std::endl;
 	}*/
@@ -403,17 +419,17 @@ void Application::ImGui()
 	}
 
 
-	if (ImGui::SliderFloat("Scale x", &scale.x, 0.1f, 2.0f, "%.4f", 2.0f) && hi != NULL) {
+	if (ImGui::SliderFloat("Scale x", &scale.x, -10.0f, 10.0f, "%.4f", 2.0f) && hi != NULL) {
 		hi->Scale(scale);
 		hi->modelMatrix();
 	}
 
-	if (ImGui::SliderFloat("Scale y", &scale.y, 0.1f, 2.0f, "%.4f", 2.0f) && hi != NULL) {
+	if (ImGui::SliderFloat("Scale y", &scale.y, -10.0f, 10.0f, "%.4f", 2.0f) && hi != NULL) {
 		hi->Scale(scale);
 		hi->modelMatrix();
 	}
 
-	if (ImGui::SliderFloat("Scale z", &scale.z, 0.1f, 2.0f, "%.4f", 2.0f) && hi != NULL) {
+	if (ImGui::SliderFloat("Scale z", &scale.z, -10.0f, 10.0f, "%.4f", 2.0f) && hi != NULL) {
 		hi->Scale(scale);
 		hi->modelMatrix();
 	}
@@ -431,6 +447,42 @@ void Application::ImGui()
 	if (ImGui::SliderFloat("tras z", &translation.z, -20.0f, 20.0f, "%.4f", 2.0f) && hi != NULL) {
 		hi->Translation(translation);
 		hi->modelMatrix();
+	}
+
+	if (ImGui::SliderFloat("Lineas Color R", &colorLineas.x, 0.0f, 1.0f, "%.04f", 2.0f) && hi != NULL) {
+
+	}
+
+	if (ImGui::SliderFloat("Lineas Color G", &colorLineas.y, 0.0f, 1.0f, "%.04f", 2.0f) && hi != NULL) {
+
+	}
+
+	if (ImGui::SliderFloat("Lineas Color B", &colorLineas.z, 0.0f, 1.0f, "%.04f", 2.0f) && hi != NULL) {
+
+	}
+
+	if (ImGui::SliderFloat("Relleno Color R", &colorRelleno.x, 0.0f, 1.0f, "%.04f", 2.0f) && hi != NULL) {
+		
+	}
+
+	if (ImGui::SliderFloat("Relleno Color G", &colorRelleno.y, 0.0f, 1.0f, "%.04f", 2.0f) && hi != NULL) {
+		
+	}
+
+	if (ImGui::SliderFloat("Relleno Color B", &colorRelleno.z, 0.0f, 1.0f, "%.04f", 2.0f) && hi != NULL) {
+	
+	}
+
+	if (ImGui::SliderFloat("Vertices Color R", &colorVertices.x, 0.0f, 1.0f, "%.04f", 2.0f) && hi != NULL) {
+
+	}
+
+	if (ImGui::SliderFloat("Vertices Color G", &colorVertices.y, 0.0f, 1.0f, "%.04f", 2.0f) && hi != NULL) {
+
+	}
+
+	if (ImGui::SliderFloat("Vertices Color B", &colorVertices.z, 0.0f, 1.0f, "%.04f", 2.0f) && hi != NULL) {
+
 	}
 
 	if (ImGui::Button("Borrar"))

@@ -47,7 +47,7 @@ namespace CG
 		float normalizer;
 		float x, y, z, xmax = -99999999990.0f, ymax = -9999999990.0f, zmax = -999999990.0f, xmin = 9999999999990.0f, ymin = 999999999990.0f, zmin = 999999999990.0f;
 
-		ifs.open("C:/Users/Danielito/Desktop/Workbench/CG1-2022-Tarea-2/EasyDIPClient/EasyDIPClient/Objects/Batman.obj", std::ifstream::in);
+		ifs.open("C:/Users/ccgucv/Desktop/Workbench/CG1-2022-Tarea-2/EasyDIPClient/EasyDIPClient/Objects/Batman.obj", std::ifstream::in);
 		//std::cout << ifs.is_open() << std::endl;
 
 		if (token == "c") {
@@ -377,36 +377,6 @@ namespace CG
 
 		//std::cout << n << std::endl;
 
-		/*for (int i = 0; i < n; i++) {
-			std::vector<int> temp = faceIndex[i];
-			for (int j = 1; j < temp.size() - 1; j++) {
-				int d = temp[0];
-				int b = temp[j];
-				int c = temp[j+1];
-
-				std::cout << "(" << d+1 << "," << b+1 << "," << c+1 << ")" << std::endl;
-				std::cout << "(" << vertex[d].x << "," << vertex[d].y << "," << vertex[d].z << ")" << std::endl;
-				std::cout << "(" << vertex[b].x << "," << vertex[b].y << "," << vertex[b].z << ")" << std::endl;
-				std::cout << "(" << vertex[c].x << "," << vertex[c].y << "," << vertex[c].z << ")" << std::endl;
-				fullvertex.push_back(vertex[d]);
-				fullvertex.push_back(vertex[b]);
-				fullvertex.push_back(vertex[c]);
-				centroid = centroid + vertex[temp[j]-1];
-
-					glm::vec3 normaloid = glm::cross(vertex[c] - vertex[b], vertex[c] - vertex[d]);
-					a->normalCenter.push_back(centroid);
-					centroid = (vertex[d] + vertex[b] + vertex[c]) / 3.0f;
-					if (normaloid != glm::vec3(0.0f, 0.0f, 0.0f)) {
-						a->normalCenter.push_back(0.1f * (glm::normalize(normaloid)));
-					}
-					else {
-						a->normalCenter.push_back(0.1f * (normaloid));
-					}x
-
-			}
-			centroid = glm::vec3(0.0f, 0.0f, 0.0f);
-		}*/
-		
 		temp = faceIndex[0];
 
 		for (int i = 0; i < faceIndex.size(); i++) {
@@ -455,9 +425,47 @@ namespace CG
 			}
 		}
 
-		fullvertex = fullvertex;
-		linesvertex = linesvertex;
-		
+
+		glm::vec3 temp1;
+		glm::vec3 temp2;
+		glm::vec3 temp3;
+
+		for (int i = 0; i < fullvertex.size() - 3; i = i + 3) {
+				
+			temp1 = fullvertex[i];
+			temp2 = fullvertex[i+1];
+			temp2 = fullvertex[i+2];
+
+			/*fullvertex.push_back(vertex[d]);
+			fullvertex.push_back(vertex[b]);
+			fullvertex.push_back(vertex[c]);*/
+			centroid = (temp1 + temp2 + temp3) / 3.0f;
+
+			glm::vec3 normaloid = (glm::cross(temp2 - temp1, temp3 - temp1) / 1.0f) + centroid;
+			
+
+			if (centroid != glm::vec3(0.0f, 0.0f, 0.0f)) {
+
+				a->normalCenter.push_back(0.1f * (centroid));
+			}
+			else {
+
+				a->normalCenter.push_back(0.1f * (centroid));
+
+			}
+
+			if (normaloid != glm::vec3(0.0f, 0.0f, 0.0f)) {
+
+				a->normalCenter.push_back(0.1f * (normaloid));
+			}
+			else {
+
+				a->normalCenter.push_back(0.1f * (normaloid));
+
+			}
+
+		}
+
 		std::cout << "Done" << std::endl;
 
 		/*for (int i = 0; i < fullvertex.size(); i++) {
