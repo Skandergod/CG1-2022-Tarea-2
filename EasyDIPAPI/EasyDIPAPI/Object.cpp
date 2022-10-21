@@ -50,13 +50,14 @@ void Object::Init() {
 }
 void Object::Draw()
 {
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glDrawArrays(GL_TRIANGLES, 0, vertex.size());
 }
 
 void Object::DrawLines() {
 	//glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * vertexLines.size(), &vertexLines[0], GL_STATIC_DRAW);
-	glDrawArrays(GL_LINES, 0, vertex.size());
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glDrawArrays(GL_TRIANGLES, 0, vertex.size());
 }
 
 void Object::DrawPoints() {
@@ -71,6 +72,12 @@ void Object::drawNormals() {
 		//glVertex3f(normalCenter[i+1].x, normalCenter[i+1].y, normalCenter[i+1].z);
 	}
 	glEnd();
+}
+
+void Object::drawAntialiasing() {
+
+	glDisable(GL_MULTISAMPLE);
+
 }
 
 void Object::Rotation(glm::vec3 t) {

@@ -15,11 +15,13 @@ glm::vec3 translation(0.0f);
 glm::vec3 origin(0.0f, 0.0f, -0.1f);
 glm::vec3 destiny(0.0f, 0.0f, 100.0f);
 const float pi = 3.14159265358979323846264338327950288;
+bool antialising = true;
+bool zBuffer = true;
 bool lines = true;
 bool points = true;
 bool fill = true;
 bool FrontFaceCulling = true;
-bool BackFaceCulling = true;
+bool BackFaceCulling = false;
 bool Normals = true;
 float color[3];
 
@@ -32,7 +34,12 @@ Application::Application() {
 		__debugbreak();
 		return;
 	}
+	
+	
+		glfwWindowHint(GLFW_SAMPLES, 4);
+	
 
+	
 	// Decide GL+GLSL versions
 #if __APPLE__
 	// GL 3.2 + GLSL 150
@@ -51,11 +58,12 @@ Application::Application() {
 #endif
 
 	// Create window with graphics context
-	 window = glfwCreateWindow(800, 600, "Dear ImGui GLFW+OpenGL3 example", NULL, NULL);
+	 window = glfwCreateWindow(800, 600, "Proyecto 2 - Daniel Da Costa", NULL, NULL);
 	 if (window == NULL) {
 		__debugbreak();
 		return;
 	}
+	
 	glfwMakeContextCurrent(window);
 	glfwSwapInterval(1); // Enable vsync
 
@@ -125,8 +133,23 @@ Application::~Application() {
 
 void Application::MainLoop()
 {
+
+	double lastTime = glfwGetTime();
+	int nbFrames = 0;
+
 	while (!glfwWindowShouldClose(window))
 	{
+		double currentTime = glfwGetTime();
+		nbFrames++;
+
+		if (currentTime - lastTime >= 5.0) { // If last prinf() was more than 1 sec ago
+		// printf and reset timer
+			std::cout << currentTime << std::endl;
+			printf("%f ms/frame\n", 1000.0 / double(nbFrames));
+			nbFrames = 0;
+			lastTime += 1.0;
+		}
+
 		glfwGetFramebufferSize(window, &windowWidth, &windowHeight);
 		if (hi) {
 			hi->proyec((float)(windowWidth / windowHeight));
@@ -196,6 +219,30 @@ void Application::Render()
 			hi->Bind();
 			hi->Draw();
 		}
+
+		if (antialising) {
+			
+			//bwShader->setMat4("modelMatrix", hi->modelMatrix);
+			
+			glEnable(GL_MULTISAMPLE);
+		}
+		else {
+
+			glDisable(GL_MULTISAMPLE);
+
+		}
+
+		if (zBuffer) {
+
+			//bwShader->setMat4("modelMatrix", hi->modelMatrix);
+			glEnable(GL_DEPTH_TEST);
+		}
+		else {
+
+			glDisable(GL_DEPTH_TEST);
+
+		}
+
 		if (lines) {
 			bwShader->setVec3("color", glm::vec3(RGB(166), RGB(184), RGB(60)));
 			hi->Bind();
@@ -312,6 +359,14 @@ void Application::ImGui()
 
 	}
 
+	if (ImGui::Checkbox("Antialising", &antialising)) {
+
+	}
+
+	if (ImGui::Checkbox("zBuffer", &zBuffer)) {
+
+	}
+
 	if (ImGui::Button("Load .obj"))
 	{
 		hi = new Object();
@@ -349,8 +404,16 @@ void Application::ImGui()
 
 
 	if (ImGui::SliderFloat("Scale x", &scale.x, 0.1f, 2.0f, "%.4f", 2.0f) && hi != NULL) {
-		scale.y = scale.x;
-		scale.z = scale.x;
+		hi->Scale(scale);
+		hi->modelMatrix();
+	}
+
+	if (ImGui::SliderFloat("Scale y", &scale.y, 0.1f, 2.0f, "%.4f", 2.0f) && hi != NULL) {
+		hi->Scale(scale);
+		hi->modelMatrix();
+	}
+
+	if (ImGui::SliderFloat("Scale z", &scale.z, 0.1f, 2.0f, "%.4f", 2.0f) && hi != NULL) {
 		hi->Scale(scale);
 		hi->modelMatrix();
 	}
