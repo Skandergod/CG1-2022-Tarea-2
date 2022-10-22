@@ -15,7 +15,7 @@ if (x < xmin) {\
 
 
 namespace CG
-{ 
+{
 	void Load(const std::string path, Object *a)
 	{
 		//if path termina en .obj
@@ -47,7 +47,7 @@ namespace CG
 		float normalizer;
 		float x, y, z, xmax = -99999999990.0f, ymax = -9999999990.0f, zmax = -999999990.0f, xmin = 9999999999990.0f, ymin = 999999999990.0f, zmin = 999999999990.0f;
 
-		ifs.open("C:/Users/ccgucv/Desktop/Workbench/CG1-2022-Tarea-2/EasyDIPClient/EasyDIPClient/Objects/Batman.obj", std::ifstream::in);
+		ifs.open(path, std::ifstream::in);
 		//std::cout << ifs.is_open() << std::endl;
 
 		if (token == "c") {
@@ -216,7 +216,7 @@ namespace CG
 					//
 					//std::cout << a << std::endl;
 					faceIndex.push_back(temp);
-					std::cout << "Face Loaded" << std::endl;
+					//std::cout << "Face Loaded" << std::endl;
 					//ifs >> token;*/
 				}
 
@@ -466,7 +466,7 @@ namespace CG
 
 		}
 
-		std::cout << "Done" << std::endl;
+			std::cout << "Done" << std::endl;
 
 		/*for (int i = 0; i < fullvertex.size(); i++) {
 			std::cout << "(" << fullvertex[i].x << "," << fullvertex[i].y << "," << fullvertex[i].z << ")" << std::endl;

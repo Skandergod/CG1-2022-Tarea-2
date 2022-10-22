@@ -15,7 +15,7 @@ Object::Object() {
 	translate = glm::vec3(0.0f);
 	rotate = glm::vec3(0.0f);
 	origin = glm::vec3 (0.0f, 0.0f, -8.0f);
-	destiny = glm::vec3 (0.0f, 0.0f, 0.0f);
+	destiny = glm::vec3 (0.0f, 0.0f, 1.0f);
 
 	Rotation(rotate);
 	Scale(scale);

@@ -6,6 +6,8 @@
 #include <fstream>
 #include <../../EasyDIPAPI/EasyDIPAPI/Object.h>
 #include <glm/gtc/constants.hpp>
+#include "GLFW/glfw3.h"
+#include <cstring>
 
 #define RGB(x) (x/255.f)
 Object* hi;
@@ -17,6 +19,9 @@ glm::vec3 destiny(0.0f, 0.0f, 100.0f);
 glm::vec3 colorRelleno(0.7f, 0.7f, 0.7f);
 glm::vec3 colorLineas(0.7f, 0.7f, 0.7f);
 glm::vec3 colorVertices(0.7f, 0.7f, 0.7f);
+glm::vec3 colorFondo(0.0f, 0.0f, 0.0f);
+std::string Dir;
+
 const float pi = 3.14159265358979323846264338327950288;
 bool antialising = true;
 bool zBuffer = true;
@@ -42,7 +47,6 @@ Application::Application() {
 	
 	
 		glfwWindowHint(GLFW_SAMPLES, 4);
-	
 
 	
 	// Decide GL+GLSL versions
@@ -162,7 +166,7 @@ void Application::MainLoop()
 			hi->proyec((float)(windowWidth / windowHeight));
 		}
 		glViewport(0, 0, windowWidth, windowHeight);
-		glClearColor(0, 0, 0, 1);
+		glClearColor(colorFondo.x, colorFondo.y, colorFondo.z, 1);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glfwPollEvents();
 
@@ -170,6 +174,9 @@ void Application::MainLoop()
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
+		if (ImGui::IsKeyPressed(GLFW_KEY_O)) {
+			std::cin >> Dir;
+		}
 
 		if (show_demo_window)
 			ImGui::ShowDemoWindow(&show_demo_window);
@@ -257,7 +264,7 @@ void Application::Render()
 		}
 
 		if (lines) {
-			bwShader->setVec3("color", glm::vec3(RGB(166), RGB(184), RGB(60)));
+			bwShader->setVec3("color", glm::vec3(colorLineas.x, colorLineas.y, colorLineas.z));
 			hi->Bind();
 			hi->DrawLines();
 		}
@@ -386,7 +393,7 @@ void Application::ImGui()
 	if (ImGui::Button("Load .obj"))
 	{
 		hi = new Object();
-		CG::LoadObj("../Objects/Object.off", hi);
+		CG::LoadObj(Dir, hi);
 		/*for (int i = 0; i < hi->vertex.size(); i++) {
 			hi->vertex[i];
 		}*/
@@ -485,6 +492,18 @@ void Application::ImGui()
 
 	}
 
+	if (ImGui::SliderFloat("Fondo Color R", &colorFondo.x, 0.0f, 1.0f, "%.04f", 2.0f) && hi != NULL) {
+
+	}
+
+	if (ImGui::SliderFloat("Fondo Color G", &colorFondo.y, 0.0f, 1.0f, "%.04f", 2.0f) && hi != NULL) {
+
+	}
+
+	if (ImGui::SliderFloat("Fondo Color B", &colorFondo.z, 0.0f, 1.0f, "%.04f", 2.0f) && hi != NULL) {
+
+	}
+
 	if (ImGui::Button("Borrar"))
 	{
 		//CG::Load("../Objects/Object.off");
@@ -519,3 +538,4 @@ void Application::HelpMarker(const char* desc)
 		ImGui::EndTooltip();
 	}
 }
+
